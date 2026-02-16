@@ -1,21 +1,21 @@
 services:
   jupyter:
-    image: jupyter/base-notebook:latest
-    container_name: jupyter
-    user: "${UID}:${GID}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jupyter-default-use
     ports:
-      - "8888:8888"
+      - "9999:9999"
+    command: start-notebook.sh --NotebookApp.port=9999 --NotebookApp.ip=0.0.0.0
     volumes:
       - ~/jupyter-data/work:/home/jovyan/work
-      - app-data:/app/configs
+      - app-data-default-use:/app/configs
     environment:
-      - NB_UID="${UID}"
-      - NB_GID="${GID}"
       - CHOWN_EXTRA="/home/jovyan/work"
       - CHOWN_EXTRA_OPTS="-R"
       - JUPYTER_ENABLE_LAB=no
-      - JUPYTER_TOKEN=bdfa9df1808fbcef9359d678a040928fb4e56959a1dbfe50
+      - JUPYTER_TOKEN=asktobianca
     restart: unless-stopped
 
 volumes:
-  app-data:
+  app-data-default-use:
